@@ -11,7 +11,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.kovalivtaras.treeko</groupId>
+    <groupId>com.taraskovaliv.treeko</groupId>
     <artifactId>bom</artifactId>
     <version>1.0.0</version>
 
