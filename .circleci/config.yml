@@ -26,8 +26,7 @@ jobs:
             git config user.name "taras"
             git add . -f
             git commit -m "Update via CircleCI"
-            git pull --no-rebase
-            git push -q https://${GITHUB_TOKEN}@github.com/taraskovaliv/treeko.repository.git master
+            git push -f -q https://${GITHUB_TOKEN}@github.com/taraskovaliv/treeko.repository.git master
 #     Notifications
       - slack/notify:
           channel: builds
