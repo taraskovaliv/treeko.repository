@@ -31,7 +31,6 @@ jobs:
       - run: mvn package
 
   deploy:
-    branche: master
     docker:
       - image: cimg/openjdk:11.0
     steps:
@@ -54,12 +53,16 @@ jobs:
           template: basic_success_1
 
 workflows:
-  build-then-test:
+  build-test-deploy:
     jobs:
       - build
       - test:
           requires:
             - build
       - deploy:
+          filters:
+            branches:
+              only:
+                - master
           requires:
             - test
