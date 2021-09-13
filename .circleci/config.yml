@@ -1,0 +1,65 @@
+version: 2.1
+orbs:
+  slack: circleci/slack@4.4.3
+
+jobs:
+  build:
+    docker:
+      - image: cimg/openjdk:11.0
+    steps:
+      - checkout
+      - run: mvn -Dmaven.test.skip=true package
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v1-dependencies-{{ checksum "pom.xml" }}
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - target/
+
+  test:
+    docker:
+      - image: cimg/openjdk:11.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "pom.xml" }}
+      - attach_workspace:
+          at: ./target
+      - run: mvn package
+
+  deploy:
+    branche: master
+    docker:
+      - image: cimg/openjdk:11.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "pom.xml" }}
+      - attach_workspace:
+          at: ./target
+      - run: mvn deploy
+
+#     Notifications
+      - slack/notify:
+          channel: builds
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          channel: builds
+          event: pass
+          template: basic_success_1
+
+workflows:
+  build-then-test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - deploy:
+          requires:
+            - test
