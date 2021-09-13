@@ -8,39 +8,13 @@ jobs:
       - image: cimg/openjdk:11.0
     steps:
       - checkout
-      - run: mvn -Dmaven.test.skip=true package
-      - save_cache:
-          paths:
-            - ~/.m2
-          key: v1-dependencies-{{ checksum "pom.xml" }}
-      - persist_to_workspace:
-          root: ./
-          paths:
-            - target/
-
-  test:
-    docker:
-      - image: cimg/openjdk:11.0
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "pom.xml" }}
-      - attach_workspace:
-          at: ./target
       - run: mvn package
 
   deploy:
-    branche: master
     docker:
       - image: cimg/openjdk:11.0
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "pom.xml" }}
-      - attach_workspace:
-          at: ./target
       - run: mvn deploy
 
 #     Notifications
@@ -54,12 +28,13 @@ jobs:
           template: basic_success_1
 
 workflows:
-  build-then-test:
+  build-test-deploy:
     jobs:
       - build
-      - test:
+      - deploy:
+          filters:
+            branches:
+              only:
+                - master
           requires:
             - build
-      - deploy:
-          requires:
-            - test
