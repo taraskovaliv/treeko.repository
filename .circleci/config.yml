@@ -21,11 +21,12 @@ jobs:
       - run:
           command: |
             cd target/mvn-repo/
-            git clone https://github.com/taraskovaliv/treeko.repository.git
+            ls
             git config user.email "taras19041@gmail.com"
             git config user.name "taras"
             git add .
             git commit -m "Update via CircleCI"
+            echo "commited"
             git push -q https://${GITHUB_TOKEN}@github.com/taraskovaliv/treeko.repository.git master
 #     Notifications
       - slack/notify:
