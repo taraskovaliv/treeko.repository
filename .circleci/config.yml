@@ -21,6 +21,7 @@ jobs:
       - run:
           command: |
             cd target/mvn-repo/
+            git fetch https://github.com/taraskovaliv/treeko.repository.git master
             git config user.email "taras19041@gmail.com"
             git config user.name "taras"
             git add . -f
