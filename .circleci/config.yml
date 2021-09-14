@@ -30,11 +30,11 @@ jobs:
             git push -f -q https://${GITHUB_TOKEN}@github.com/taraskovaliv/treeko.repository.git master
 #     Notifications
       - slack/notify:
-          channel: builds
+          channel: deploys
           event: fail
           template: basic_fail_1
       - slack/notify:
-          channel: builds
+          channel: deploys
           event: pass
           template: basic_success_1
 
