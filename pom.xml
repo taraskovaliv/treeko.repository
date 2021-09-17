@@ -153,8 +153,12 @@
 
     <distributionManagement>
         <repository>
-            <id>internal</id>
-            <url>${url}</url>
+            <id>myMavenRepo</id>
+            <url>${myMavenRepoWriteUrl}</url>
         </repository>
+        <snapshotRepository>
+            <id>myMavenRepo</id>
+            <url>${myMavenRepoWriteUrl}</url>
+        </snapshotRepository>
     </distributionManagement>
 </project>
